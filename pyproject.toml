@@ -13,3 +13,6 @@ dependencies = [
     "langchain-openai>=1.3.3",
     "python-dotenv>=1.2.2",
 ]
+
+[tool.pyright]
+extraPaths = ["practice/ai-devops-assistant"]
