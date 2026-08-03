@@ -1,4 +1,6 @@
 #list ec2 instances
+from langchain.tools import tool
+
 EC2_INSTANCES=[
     {
     "id": "i-02179214",
@@ -14,48 +16,39 @@ EC2_INSTANCES=[
     "state": "terminated"
   }
 ]
-class ec2:
-    EC2_INSTANCES=[]
-    def __init__(self):
-        self.EC2_INSTANCES=[
-            {
-            "id": "i-02179214",
-            "name": "web-server",
-            "state": "stopped"
-          },{
-            "id": "i-02179255",
-            "name": "app-server",
-            "state": "stopped"
-          },{
-            "id": "i-02178123",
-            "name": "db-server",
-            "state": "terminated"
-          }
-        ]
 
-    def list_instances(self):
-        return self.EC2_INSTANCES
-    
-    def get_instance_by_id(self,instance_id):
-        for instance in self.EC2_INSTANCES:
-            if instance["id"]==instance_id:
-                return instance
-        return None
-            
-    def restart_instance(self, instance_id):
-        instance = self.get_instance_by_id(instance_id)
-        # pyrefly: ignore [unsupported-operation]
-        if instance["state"] == "terminated":
-            return "the instance is terminated, cannot restart it"
-        elif instance["state"] == "running":
-            return "the instance is already running"
-        elif instance["state"] == "stopped":
-            instance["state"] == "running"
-            return "the instance is restarting"
-        else:
-            return "instance not found"
+@tool
+def list_instances():
+    """lists all the instances"""
+    return EC2_INSTANCES
 
-ec2_obj = ec2()
+@tool
+def get_instance_by_id(instance_id):
+    """gets the instance by id"""
+    for instance in EC2_INSTANCES:
+        if instance["id"]==instance_id:
+            return instance
+    return "instance not found"
 
-print(ec2_obj.restart_instance("i-02178123"))
-print(ec2_obj.get_instance_by_id("i-02178123"))
+def get_instance_b_id(instance_id):
+    """gets the instance by id"""
+    for instance in EC2_INSTANCES:
+        if instance["id"]==instance_id:
+            return instance
+    return "instance not found"
+
+@tool
+def restart_instance(instance_id: str):
+    """restarts the instance by id"""
+    instance = get_instance_b_id(instance_id)
+    if isinstance(instance, str):
+        return instance
+    if instance["state"] == "terminated":
+        return "the instance is terminated, cannot restart it"
+    elif instance["state"] == "running":
+        return "the instance is already running"
+    elif instance["state"] == "stopped":
+        instance["state"] = "running"
+        return "the instance is restarting"
+    else:
+        return "instance not found"
