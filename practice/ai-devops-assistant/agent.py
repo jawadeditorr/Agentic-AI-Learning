@@ -13,6 +13,7 @@ if not groq_api_key:
     raise ValueError("GROQ_API_KEY is missing from environment variables or .env file.")
 
 groq_model=init_chat_model("groq:llama-3.3-70b-versatile")
+
 # llm = ChatGoogleGenerativeAI(
 #     model="gemini-2.5-flash",
 #     temperature=0
