@@ -11,7 +11,9 @@ dependencies = [
     "langchain-google-genai>=4.2.6",
     "langchain-groq>=1.1.3",
     "langchain-openai>=1.3.3",
+    "langchain-tavily>=0.2.18",
     "python-dotenv>=1.2.2",
+    "tavily-python>=0.7.27",
 ]
 
 [tool.pyright]

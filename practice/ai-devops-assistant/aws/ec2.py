@@ -101,7 +101,7 @@ def get_instance_by_id_helper(instance_id):
 @tool
 def start_instance(instance_id):
     """starts an existing instance by id"""
-    instance_id,state = get_instance_b_id(instance_id)
+    instance_id,state = get_instance_by_id_helper(instance_id)
 
     #instance not found
     if instance_id == "instance not found" and state == "not found":
@@ -160,7 +160,7 @@ def start_instance(instance_id):
 @tool
 def stop_instance(instance_id):
     """stops an existing running instance by id"""
-    instance_id,state = get_instance_b_id(instance_id)
+    instance_id,state = get_instance_by_id_helper(instance_id)
 
     #instance not found
     if instance_id == "instance not found" and state == "not found":
@@ -215,7 +215,7 @@ def stop_instance(instance_id):
 @tool
 def restart_instance(instance_id):
     """restarts an existing instance by id"""
-    instance_id,state = get_instance_b_id(instance_id)
+    instance_id,state = get_instance_by_id_helper(instance_id)
 
     #instance not found
     if instance_id == "instance not found" and state == "not found":
@@ -269,7 +269,7 @@ def restart_instance(instance_id):
 @tool
 def terminating_instance(instance_id):
     """terminate an existing instance by id"""
-    instance_id,state = get_instance_b_id(instance_id)
+    instance_id,state = get_instance_by_id_helper(instance_id)
 
     #instance not found
     if instance_id == "instance not found" and state == "not found":
@@ -390,34 +390,35 @@ def create_instance(os: str,name: str,instance_type: str, disk_size: int):
         })
 
 def get_latest_ami(os_name: str):
-    """find ami image"""
+    if os_name not in AMI_FILTERS:
+        raise ValueError(
+            f"Unsupported OS '{os_name}'. "
+            f"Supported OS: {', '.join(AMI_FILTERS.keys())}"
+        )
+
     config = AMI_FILTERS[os_name]
-    try:
-        response = ec2.describe_images(
-            Owners=[config["owner"]],
-            Filters=[
-                {
-                    "Name": "name",
-                    "Values": [config["name"]]
-                },
-                {
-                    "Name": "architecture",
-                    "Values": ["x86_64"]
-                }
-            ]
-        )
 
-        images = sorted(
-            response["Images"],
-            key=lambda x: x["CreationDate"],
-            reverse=True
-        )
+    response = ec2.describe_images(
+        Owners=[config["owner"]],
+        Filters=[
+            {
+                "Name": "name",
+                "Values": [config["name"]]
+            },
+            {
+                "Name": "architecture",
+                "Values": ["x86_64"]
+            }
+        ]
+    )
 
-        return images[0]["ImageId"]
-    except Exception as e:
-        return json.dumps({
-            "status": False,
-            "message": "Error finding AMI",
-            "error_type": type(e).__name__,
-            "error": str(e)
-        })
+    images = sorted(
+        response["Images"],
+        key=lambda x: x["CreationDate"],
+        reverse=True
+    )
+
+    if not images:
+        raise ValueError(f"No AMI found for OS '{os_name}'.")
+
+    return images[0]["ImageId"]

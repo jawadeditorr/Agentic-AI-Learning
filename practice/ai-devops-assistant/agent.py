@@ -1,5 +1,6 @@
  #agent creation will happen here
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -8,6 +9,8 @@ from langchain.chat_models import init_chat_model
 from pprint import pprint
 
 load_dotenv()
+
+BASE_DIR=Path(__file__).parent
 
 # groq_api_key = os.getenv("GROQ_API_KEY")
 # if not groq_api_key:
@@ -30,7 +33,9 @@ agent=create_agent(
         stop_instance,
         terminating_instance
         ],
-    system_prompt="You are an AI DevOps Assistant."
+    system_prompt=(
+        BASE_DIR / "prompts" / "system_prompt.md"
+    ).read_text(encoding="utf-8")
 )
 
 response = agent.invoke(
