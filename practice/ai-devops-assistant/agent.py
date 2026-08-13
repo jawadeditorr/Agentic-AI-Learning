@@ -1,12 +1,12 @@
- #agent creation will happen here
+#agent creation will happen here
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
 from aws.ec2 import list_instances,get_instance_by_id,restart_instance,start_instance,stop_instance,terminating_instance
-from langchain.chat_models import init_chat_model
-from pprint import pprint
+from tools.web_search import search_web,extract_web,map_web,crawl_web,research_web,get_research
+
 
 load_dotenv()
 
@@ -31,7 +31,13 @@ agent=create_agent(
         restart_instance,
         start_instance,
         stop_instance,
-        terminating_instance
+        terminating_instance,
+        search_web,
+        extract_web,
+        map_web,
+        crawl_web,
+        research_web,
+        get_research
         ],
     system_prompt=(
         BASE_DIR / "prompts" / "system_prompt.md"
@@ -43,7 +49,7 @@ response = agent.invoke(
         "messages":[
             {
                 "role":"user",
-                "content":"list instances"
+                "content":"What is DevOps?"
             }
         ]
     }

@@ -1,0 +1,13 @@
+import os
+from dotenv import load_dotenv
+
+from langchain_openai import ChatOpenAI
+
+load_dotenv()
+
+model = ChatOpenAI(
+    model="nvidia/nemotron-3-ultra-550b-a55b",
+    base_url="https://integrate.api.nvidia.com/v1",
+    api_key=os.getenv("NVIDIA_API_KEY"),
+    temperature=0.6,
+)
