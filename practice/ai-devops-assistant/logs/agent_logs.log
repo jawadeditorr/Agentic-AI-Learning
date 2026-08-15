@@ -1,0 +1,12 @@
+2026-08-15 00:21:17,443 | INFO | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-08-15 00:21:17,446 | INFO | TOOLS | tavily_search started
+2026-08-15 00:21:17,446 | INFO | ARGS | {'query': 'What is DevOps?'} for tool tavily_search
+2026-08-15 00:21:18,147 | INFO | TOOL_RESULT | SUCCESS tavily_search completed
+2026-08-15 00:21:18,147 | INFO | EXECUTION TIME | 0.7011664999954519 seconds
+2026-08-15 00:21:20,070 | INFO | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-08-15 00:21:35,130 | INFO | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-08-15 00:21:35,134 | INFO | TOOLS | tavily_search started
+2026-08-15 00:21:35,134 | INFO | ARGS | {'query': 'What is DevOps?'} for tool tavily_search
+2026-08-15 00:21:35,781 | INFO | TOOL_RESULT | SUCCESS tavily_search completed
+2026-08-15 00:21:35,781 | INFO | EXECUTION TIME | 0.6472701999955461 seconds
+2026-08-15 00:21:37,807 | INFO | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
