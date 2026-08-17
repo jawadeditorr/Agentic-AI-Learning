@@ -1,5 +1,6 @@
 #agent creation will happen here
 import os
+import uuid
 from pathlib import Path
 from dotenv import load_dotenv
 from langchain.agents import create_agent
@@ -75,17 +76,20 @@ agent=create_agent(
     ).read_text(encoding="utf-8")
 )
 
-config = {"configurable": {"thread_id": "thread1"}}
+thread_id = str(uuid.uuid4())
+
+config = {"configurable": {"thread_id": thread_id}}
 
 response = agent.invoke(
     {
         "messages":[
             {
                 "role":"user",
-                "content":"What is DevOps?"
+                "content":"list instances"
             }
         ]
-    }
+    },
+    config=config
 )
 
 print(response["messages"][-1].content)
