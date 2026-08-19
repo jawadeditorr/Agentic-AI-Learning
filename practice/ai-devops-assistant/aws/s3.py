@@ -15,14 +15,14 @@ def list_s3_buckets():
             "status": True,
             "message": "S3 buckets listed",
             "buckets": response["Buckets"]
-        })
+        }, default=str)
     except Exception as e:
         return json.dumps({
             "status": False,
             "message": "error listing s3 buckets",
             "error_type": type(e).__name__,
             "error": str(e)
-        })
+        }, default=str)
 
 @tool
 def create_s3_bucket(bucket_name):
@@ -36,14 +36,14 @@ def create_s3_bucket(bucket_name):
             "message": "S3 bucket created",
             "bucket_name": bucket_name,
             "aws_response": response
-        })
+        }, default=str)
     except Exception as e:
         return json.dumps({
             "status": False,
             "message": "error creating s3 bucket",
             "error_type": type(e).__name__,
             "error": str(e)
-        })
+        }, default=str)
 
 @tool
 def get_bucket_by_name(bucket_name):
@@ -51,7 +51,7 @@ def get_bucket_by_name(bucket_name):
     response = s3.list_buckets()
     for bucket in response["Buckets"]:
         if bucket_name == bucket["Name"]:
-            return bucket["Name"],bucket["CreationDate"]
+            return bucket["Name"], str(bucket["CreationDate"])
     return "bucket not found","not found"
 
 #helper function
@@ -79,11 +79,11 @@ def delete_s3_bucket(bucket_name):
                 "message": "S3 bucket deleted",
                 "bucket_name": bucket_name,
                 "aws_response": response
-            })
+            }, default=str)
         except Exception as e:
             return json.dumps({
                 "status": False,
                 "message": "error deleting s3 bucket",
                 "error_type": type(e).__name__,
                 "error": str(e)
-            })
+            }, default=str)

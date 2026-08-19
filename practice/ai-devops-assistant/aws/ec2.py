@@ -49,7 +49,7 @@ def list_instances():
                 "ip": instance.get("PublicIpAddress", "No Public IP Address"),
                 "ami_id": instance["ImageId"],
                 "instance_type": instance["InstanceType"],
-                "launch_time": instance["LaunchTime"]
+                "launch_time": str(instance["LaunchTime"])
             })
     if len(all_instances)==0:
         return "No EC2 instances found in your AWS account or region."
@@ -69,14 +69,14 @@ def describe_instance(instance_id):
             "message": "Instance described",
             "instance_id": instance_id,
             "aws_response": response
-        })
+        }, default=str)
     except Exception as e:
         return json.dumps({
             "status": False,
             "message": "error describing instance",
             "error_type": type(e).__name__,
             "error": str(e)
-        })
+        }, default=str)
 
 
 @tool
@@ -141,21 +141,21 @@ def start_instance(instance_id):
                 "instance_id": instance_id,
                 "state": "starting",
                 "aws_response": response
-            })
+            }, default=str)
         except Exception as e:
             return json.dumps({
                 "status": False,
                 "message": "error starting instance",
                 "error_type": type(e).__name__,
                 "error": str(e)
-            })
+            }, default=str)
     else:
         return json.dumps({
             "status": False,
             "message": "instance not found",
             "error_type": "InstanceNotFound",
             "instance_id": instance_id
-        })
+        }, default=str)
 
 @tool
 def stop_instance(instance_id):
@@ -184,7 +184,7 @@ def stop_instance(instance_id):
                 "instance_id": instance_id,
                 "state": "stopping",
                 "aws_response": response
-            })
+            }, default=str)
 
         except Exception as e:
             return json.dumps({
@@ -192,7 +192,7 @@ def stop_instance(instance_id):
                 "message": "error stopping instance",
                 "error_type": type(e).__name__,
                 "error": str(e)
-            })
+            }, default=str)
     
     #instance is pending
     elif state["Code"] == 0:
@@ -239,14 +239,14 @@ def restart_instance(instance_id):
                 "instance_id": instance_id,
                 "state": "restarting",
                 "aws_response": response
-            })
+            }, default=str)
         except Exception as e:
             return json.dumps({
                 "status": False,
                 "message": "error restarting instance",
                 "error_type": type(e).__name__,
                 "error": str(e)
-            })
+            }, default=str)
     
     #instance is pending
     elif state["Code"] == 0:
@@ -293,14 +293,14 @@ def terminating_instance(instance_id):
                 "instance_id": instance_id,
                 "state": "terminating",
                 "aws_response": response
-            })
+            }, default=str)
         except Exception as e:
             return json.dumps({
                 "status": False,
                 "message": "error terminating instance",
                 "error_type": type(e).__name__,
                 "error": str(e)
-            })
+            }, default=str)
     
     #instance is pending
     elif state["Code"] == 0:
@@ -328,14 +328,14 @@ def terminating_instance(instance_id):
                 "instance_id": instance_id,
                 "state": "terminating",
                 "aws_response": response
-            })
+            }, default=str)
         except Exception as e:
             return json.dumps({
                 "status": False,
                 "message": "error terminating instance",
                 "error_type": type(e).__name__,
                 "error": str(e)
-            })
+            }, default=str)
 
     else:
         return "instance not found"
@@ -380,14 +380,14 @@ def create_instance(os: str,name: str,instance_type: str, disk_size: int):
                 "status": True,
                 "message": "Creating an instance",
                 "aws_response": response
-            })
+            }, default=str)
     except Exception as e:
         return json.dumps({
             "status": False,
             "message": "Error creating an instance",
             "error_type": type(e).__name__,
             "error": str(e)
-        })
+        }, default=str)
 
 def get_latest_ami(os_name: str):
     if os_name not in AMI_FILTERS:
